@@ -49,7 +49,7 @@ function checkInput() {
 function setup(){
     let cnv = createCanvas(windowWidth, windowHeight);
     cnv.mousePressed(togglePlay);
-    textAlign(CENTER);
+    pixelDensity(1)
     mic = new p5.AudioIn();
     mic.start();
     fft = new p5.FFT(.8, 1024);
