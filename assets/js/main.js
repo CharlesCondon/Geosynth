@@ -1,4 +1,5 @@
 let mic;
+let micToggle = false;
 let angle = 0;
 let test = 0;
 
@@ -16,6 +17,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
             e.classList.toggle('hidden')
         })
     })
+
+    
 });
 
 function preload() {
@@ -30,6 +33,19 @@ function togglePlay() {
     }
 }
 
+function checkInput() {
+    if (micToggle === false) {
+        console.log("song")
+        mic.stop()
+        return song;
+    }
+    else {
+        console.log("mic")
+        mic.start()
+        return mic;
+    }
+}
+
 function setup(){
     let cnv = createCanvas(windowWidth, windowHeight);
     cnv.mousePressed(togglePlay);
@@ -37,7 +53,14 @@ function setup(){
     mic = new p5.AudioIn();
     mic.start();
     fft = new p5.FFT(.8, 1024);
-    fft.setInput();
+    fft.setInput(checkInput());
+
+    let micBtn = document.getElementById("mic");
+    micBtn.addEventListener("click", (e) => {
+        micToggle = !micToggle;
+        micBtn.classList.toggle('highlight')
+        fft.setInput(checkInput());
+    })
 }
 
 function draw(){
