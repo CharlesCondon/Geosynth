@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.hidden {
+    display: none;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    padding: 10px;
+    margin: 10px;
+    gap: 20px;
+}
+
+.navBtn {
+    width: 40px;
+    height: 40px;
+    filter: invert(100%);
+}
+
+.navBtnCont {
+    width: 40px;
+    height: 40px;
+    border-bottom: 2px solid rgba(255, 255, 255, .5);
+    padding: 12px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, .5);
+    transition: all .5s;
+}
+.navBtnCont:hover {
+    background-color: rgba(255, 255, 255, .25);
+}
+
+button {
+    background-color: transparent;
+    border: none;
+}
+
+#show {
+    position: fixed;
+    left: -30px;
+    border-radius: 10px;
+    padding-right: 5px;
+    transition: all .5s;
+}
+#show:hover {
+    left: -10px;
+}
