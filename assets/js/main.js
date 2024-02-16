@@ -5,18 +5,27 @@ let test = 0;
 let userColor = false;
 let colorCheck;
 let r,g,b;
-let speedSlider,weightSlider,volSlider,redSlider,greenSlider,blueSlider;
+let speedSlider,weightSlider,volSlider,redSlider,greenSlider,blueSlider,visSlider,bgSlider;
+let outlineCheck,crossCheck,rectCheck,horizCheck,vertCheck,circleCheck,waveCheck,rotateCheck;
 
 document.addEventListener("DOMContentLoaded", (event) => {
     let btns = document.getElementsByClassName("navToggle")
     let hideBtn = document.getElementById("hide");
     let showBtn = document.getElementById("show");
     let setBtn = document.getElementById("settings");
+    let setCont = document.getElementById("settingsCont");
+    let layerBtn = document.getElementById("layers");
+    let layerCont = document.getElementById("layersCont");
 
     hideBtn.addEventListener("click", (e) => {
         btns.forEach( e => {
-            e.classList.toggle('hidden')
+            e.classList.toggle('hidden');
+            if (e.id !== "mic") {
+                e.classList.remove("highlight");
+            }
         })
+        layerCont.classList.add("hidden");
+        setCont.classList.add("hidden");
     })
     showBtn.addEventListener("click", (e) => {
         btns.forEach( e => {
@@ -24,7 +33,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
         })
     })
     setBtn.addEventListener("click", (e) => {
-        
+        setBtn.classList.toggle("highlight");
+        setCont.classList.toggle("hidden");
+    })
+    layerBtn.addEventListener("click", (e) => {
+        layerBtn.classList.toggle("highlight");
+        layerCont.classList.toggle("hidden");
     })
 
     
@@ -70,7 +84,9 @@ function setup(){
         micBtn.classList.toggle('highlight')
         fft.setInput(checkInput());
     })
-
+    
+    bgSlider = createSlider(1, 255, 255, 1);
+    bgSlider.parent("settingsCont");
     speedSlider = createSlider(50, 700, 200, 50);
     speedSlider.parent("settingsCont");
     weightSlider = createSlider(1, 10, 1, 1);
@@ -87,14 +103,35 @@ function setup(){
     blueSlider = createSlider(0, 255, 100, 1);
     blueSlider.parent("settingsCont");
 
+    circleCheck = createCheckbox(" Spiral",true);
+    circleCheck.parent("layersCont");
+    outlineCheck = createCheckbox(" Outline");
+    outlineCheck.parent("layersCont");
+    crossCheck = createCheckbox(" Crosshash");
+    crossCheck.parent("layersCont");
+    rectCheck = createCheckbox(" Rectangle");
+    rectCheck.parent("layersCont");
+    rotateCheck = createCheckbox(" Spin Rectangles");
+    rotateCheck.parent("layersCont");
+    horizCheck = createCheckbox(" Horizontal");
+    horizCheck.parent("layersCont");
+    vertCheck = createCheckbox(" Vertical");
+    vertCheck.parent("layersCont");
+    waveCheck = createCheckbox(" Wavelength");
+    waveCheck.parent("layersCont");
+
+    visSlider = createSlider(.1, 1, 1, .1);
+    visSlider.parent("layersCont");
 }
 
 function draw(){
-    background(0, 0, 0, 255);
+    background(0, 0, 0, bgSlider.value());
     song.setVolume(volSlider.value());
     //text('tap to start', width/2, 20);
 
     let spectrum = fft.analyze();
+    let waveform = fft.waveform();
+
     if (!colorCheck.checked()) {
         b = Math.floor(fft.getEnergy("lowMid"));
         g = Math.floor(fft.getEnergy("mid"));
@@ -106,141 +143,175 @@ function draw(){
     }
     
 
-    let cent = Math.floor(fft.getCentroid());
-    let centroid = Math.floor(map(cent, 0, 10000, 5, 1))
+    // let cent = Math.floor(fft.getCentroid());
+    // let centroid = Math.floor(map(cent, 0, 10000, 5, 1))
     // fill(255)
     // text(`${centroid}`, width/2, 20)
 
-    // RECTANGLE
-    // noStroke();
-    // beginShape();
-    // push();
-    // translate(width / 2, height / 2);
-    // angle += radians(.25);
-    // rotate(angle);
-    // for (let i = 0; i< spectrum.length-350; i++){
-    //     let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
-    //     let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
-    //     let x = map(i, 0, spectrum.length-350, 0, -width*1.5);
-    //     let x2 = map(i, spectrum.length-350, 0, width*1.5, 0);
+    // RECTANGLE OUTLINE
+    if (outlineCheck.checked()) {
+        noStroke();
+        beginShape();
+        push();
+        //translate(width / 2, height / 2);
+        // if (rotateCheck.checked()) {
+        //     angle += radians(.25);
+        //     rotate(angle);
+        // }
+        for (let i = 0; i< spectrum.length-350; i++){
+            let y = map(i, 0, spectrum.length-350, 0, height/2);
+            let y2 = map(i, spectrum.length-350, 0, height/2, height);
+            let x = map(i, 0, spectrum.length-350, 0, width/2);
+            let x2 = map(i, spectrum.length-350, 0, width/2, width);
+    
+            fill(r, g, b, (spectrum[i]*visSlider.value()))
+            rect(0, y, width*2, weightSlider.value() )
+            rect(0, y2, width*2, weightSlider.value() )
+            rect(x, 0, weightSlider.value(), height*4 )
+            rect(x2, 0, weightSlider.value(), height*4 )
+        }
+        pop();
+        endShape();
+    }
 
-    //     let h = -height + map(spectrum[i], 0, 255, height, 0);
 
-    //     fill(`rgba( 0, ${spectrum[i]}, ${spectrum[i]}, .5)`)
-    //     rect(-width, y, width*2, 2 )
-    //     rect(-width, y2, width*2, 2 )
-    //     rect(x, -height*1.5, 2, height*4 )
-    //     rect(x2, -height*1.5, 2, height*4 )
-    // }
-    // pop();
-    // endShape();
+    // CROSSHASH
+    if (crossCheck.checked()) {
+        noStroke();
+        beginShape();
+        push();
+        //translate(width / 2, height / 2);
+        // if (rotateCheck.checked()) {
+        //     angle += radians(.25);
+        //     rotate(angle);
+        // }
+        for (let i = 0; i< spectrum.length-350; i++){
+            let y = map(i, 0, spectrum.length-350, height/2, 0);
+            let y2 = map(i, spectrum.length-350, 0, height, height/2);
+            let x = map(i, 0, spectrum.length-350, width/2, 0);
+            let x2 = map(i, spectrum.length-350, 0, width, width/2);
+    
+            fill(r, g, b, (spectrum[i]*visSlider.value()))
+            rect(0, y, width*2, weightSlider.value() )
+            rect(0, y2, width*2, weightSlider.value() )
+            rect(x, 0, weightSlider.value(), height*4 )
+            rect(x2, 0, weightSlider.value(), height*4 )
+        }
+        pop();
+        endShape();
+    }
+
 
     // RECTANGLE OPPOSITE DIRECTION
-    // noStroke();
-    // translate(width / 2, height / 2);
-    // angle += radians(.25);
-    // rotate(-angle);
-    // for (let i = 0; i< spectrum.length-350; i++){
-    //     let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
-    //     let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
-    //     let x = map(i, 0, spectrum.length-350, 0, -width*1.5);
-    //     let x2 = map(i, spectrum.length-350, 0, width*1.5, 0);
-
-    //     let h = -height + map(spectrum[i], 0, 255, height, 0);
-
-    //     fill(`rgba( 0, ${spectrum[i]}, ${spectrum[i]}, .25)`)
-    //     rect(-width, y, width*2, 2 )
-    //     rect(-width, y2, width*2, 2 )
-    //     rect(x, -height*1.5, 2, height*4 )
-    //     rect(x2, -height*1.5, 2, height*4 )
-    // }
+    if (rectCheck.checked()) {
+        noStroke();
+        beginShape();
+        push();
+        translate(width / 2, height / 2);
+        if (rotateCheck.checked()) {
+            angle += radians(.25);
+            rotate(-angle);
+        }
+        for (let i = 0; i< spectrum.length-350; i++){
+            let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
+            let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
+            let x = map(i, 0, spectrum.length-350, 0, -width*1.5);
+            let x2 = map(i, spectrum.length-350, 0, width*1.5, 0);
     
+            fill(r, g, b, (spectrum[i]*visSlider.value()))
+            rect(-width, y, width*2, weightSlider.value() )
+            rect(-width, y2, width*2, weightSlider.value() )
+            rect(x, -height*1.5, weightSlider.value(), height*4 )
+            rect(x2, -height*1.5, weightSlider.value(), height*4 )
+        }
+        pop();
+        endShape();
+    }
 
 
-
-    
     // VERTICAL FREQUENCY BARS
-    // beginShape();
-    // noStroke();
-    // push();
-    // translate(width / 2, height / 2);
-    // // angle += radians(.25);
-    // // rotate(angle);
-    // for (let i = 0; i< spectrum.length-350; i++){
-    //     let x = map(i, 0, spectrum.length-350, 0, -width*1.5);
-    //     let x2 = map(i, spectrum.length-350, 0, width*1.5, 0);
-
-    //     let h = -height + map(spectrum[i], 0, 255, height, 0);
-
-    //     fill(`rgba(${spectrum[i]},${spectrum[i]},${spectrum[i]}, .25)`)
-    //     rect(x, -height*1.5, 2, height*4 )
-    //     rect(x2, -height*1.5, 2, height*4 )
-        
-    // }
-    // endShape();
-    // pop();
+    if (vertCheck.checked()) {
+        beginShape();
+        noStroke();
+        push();
+        translate(width / 2, height / 2);
+        // angle += radians(.25);
+        // rotate(angle);
+        for (let i = 0; i< spectrum.length-350; i++){
+            let x = map(i, 0, spectrum.length-350, 0, -width*1.5);
+            let x2 = map(i, spectrum.length-350, 0, width*1.5, 0);
+    
+            let h = -height + map(spectrum[i], 0, 255, height, 0);
+    
+            fill(r, g, b, (spectrum[i]*visSlider.value()))
+            rect(x, -height*1.5, weightSlider.value(), height*4 )
+            rect(x2, -height*1.5, weightSlider.value(), height*4 )
+            
+        }
+        endShape();
+        pop();
+    }
 
 
     // HORIZONTAL FREQUENCY LINES
-    // noStroke();
-    // push();
-    // translate(width / 2, height / 2);
-    // // angle += radians(.25);
-    // // rotate(-angle);
-    // test += 1;
-    // for (let i = 0; i< spectrum.length-350; i++){
-    //     let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
-    //     let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
-
-    //     let h = -height + map(spectrum[i], 0, 255, height, 0);
-
-    //     fill(`rgba(${spectrum[i]},${spectrum[i]},${spectrum[i]}, .25)`)
-    //     rect(-width, y, width*2, 1 )
-    //     rect(-width, y2, width*2, 1 )
-        
-    // }
-    // pop();
+    if (horizCheck.checked()) {
+        noStroke();
+        push();
+        translate(width / 2, height / 2);
+        // angle += radians(.25);
+        // rotate(-angle);
+        test += 1;
+        for (let i = 0; i< spectrum.length-350; i++){
+            let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
+            let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
     
-    
-
-    let waveform = fft.waveform();
-
-    // WAVEFORM
-    // beginShape();
-    // noFill()
-    // stroke(255, 255, 255);
-    // strokeWeight(5);
-    
-    // for (let i = 0; i < waveform.length; i++){
-    //     let x = map(i, 0, waveform.length/2, 0, width/2);
-    //     let y = map( waveform[i], -1, 1, 0, height);
-    //     vertex(x,y);
-        
-    // }
-    // endShape();
-
+            fill(r, g, b, (spectrum[i]*visSlider.value()))
+            rect(-width, y, width*2, weightSlider.value() )
+            rect(-width, y2, width*2, weightSlider.value() )
+            
+        }
+        pop();
+    }
 
 
     // BLACK HOLE VISUAL
-    noStroke();
-    beginShape();
-    push();
-    translate(width / 2, height / 2);
-    angle += radians(1);
-    for (let i = 0; i< spectrum.length-350; i++){
-        let y = map(i, 0, spectrum.length-350, height/2, height);
-        let y2 = map(i, spectrum.length-350, 0, 0, height/2);
-        let x = map(i, 0, spectrum.length-350, width/2, width);
-        let x2 = map(i, spectrum.length-350, 0, 0, width/2);
-
-        fill(r, g, b, spectrum[i])
-        rect(0, y, width, weightSlider.value() )
-        rect(0, y2, width, weightSlider.value() )
-        rect(x, 0, weightSlider.value(), height )
-        rect(x2, 0, weightSlider.value(), height )
-        rotate(angle/speedSlider.value());
+    if (circleCheck.checked()) {
+        noStroke();
+        beginShape();
+        push();
+        translate(width / 2, height / 2);
+        angle += radians(1);
+        for (let i = 0; i< spectrum.length-350; i++){
+            let y = map(i, 0, spectrum.length-350, height/2, height);
+            let y2 = map(i, spectrum.length-350, 0, 0, height/2);
+            let x = map(i, 0, spectrum.length-350, width/2, width);
+            let x2 = map(i, spectrum.length-350, 0, 0, width/2);
+    
+            fill(r, g, b, spectrum[i])
+            rect(0, y, width, weightSlider.value() )
+            rect(0, y2, width, weightSlider.value() )
+            rect(x, 0, weightSlider.value(), height )
+            rect(x2, 0, weightSlider.value(), height )
+            rotate(angle/speedSlider.value());
+        }
+        pop();
+        endShape();
     }
-    pop();
-    endShape();
+
+
+    // WAVEFORM
+    if (waveCheck.checked()) {
+        beginShape();
+        noFill()
+        stroke(255, 255, 255);
+        strokeWeight(5);
+        
+        for (let i = 0; i < waveform.length; i++){
+            let x = map(i, 0, waveform.length/2, 0, width/2);
+            let y = map( waveform[i], -1, 1, 0, height);
+            vertex(x,y);
+        }
+        endShape();
+    }
 }
   
