@@ -22,12 +22,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     hideBtn.addEventListener("click", (e) => {
         btns.forEach( e => {
             e.classList.toggle('hidden');
-            // if (e.id !== "mic") {
-            //     e.classList.remove("highlight");
-            // }
+            if (e.id !== "mic") {
+                e.classList.remove("highlight");
+            }
         })
         layerCont.classList.add("hidden");
         setCont.classList.add("hidden");
+        songCont.classList.add("hidden");
     })
     showBtn.addEventListener("click", (e) => {
         btns.forEach( e => {
