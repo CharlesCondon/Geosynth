@@ -86,13 +86,13 @@ function setup(){
     })
     
     bgSlider = createSlider(1, 255, 255, 1);
-    bgSlider.parent("settingsCont");
-    speedSlider = createSlider(50, 700, 200, 50);
-    speedSlider.parent("settingsCont");
-    weightSlider = createSlider(1, 10, 1, 1);
-    weightSlider.parent("settingsCont");
+    bgSlider.parent("bgCont");
     volSlider = createSlider(0, 1, .5, .1);
-    volSlider.parent("settingsCont");
+    volSlider.parent("volCont");
+    speedSlider = createSlider(50, 700, 200, 50);
+    speedSlider.parent("speedCont");
+    weightSlider = createSlider(1, 10, 1, 1);
+    weightSlider.parent("weightCont");
 
     colorCheck = createCheckbox();
     colorCheck.parent("settingsCont");
