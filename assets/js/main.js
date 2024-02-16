@@ -22,9 +22,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     hideBtn.addEventListener("click", (e) => {
         btns.forEach( e => {
             e.classList.toggle('hidden');
-            if (e.id !== "mic") {
-                e.classList.remove("highlight");
-            }
+            // if (e.id !== "mic") {
+            //     e.classList.remove("highlight");
+            // }
         })
         layerCont.classList.add("hidden");
         setCont.classList.add("hidden");
@@ -47,7 +47,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         setCont.classList.add("hidden");
         layerBtn.classList.remove("highlight");
         layerCont.classList.add("hidden");
-        songCont.classList.toggle("hidden")
+        songCont.classList.toggle("hidden");
+        songBtn.classList.toggle("highlight");
     })
 
     
@@ -71,19 +72,7 @@ function changeSong() {
         //document.getElementById("playImg").src = "assets/images/playBtn.png";
     }
     song = loadSound(`./assets/music/${this.id}.mp3`);
-}
-
-function checkInput() {
-    if (micToggle === false) {
-        console.log("song")
-        mic.stop()
-        return song;
-    }
-    else {
-        console.log("mic")
-        mic.start()
-        return mic;
-    }
+    console.log(song)
 }
 
 function setup(){
@@ -91,16 +80,25 @@ function setup(){
     cnv.mousePressed(togglePlay);
     pixelDensity(1)
     mic = new p5.AudioIn();
-    mic.start();
     fft = new p5.FFT(.8, 1024);
     fft.setInput();
 
-    let micBtn = document.getElementById("mic");
-    micBtn.addEventListener("click", (e) => {
-        micToggle = !micToggle;
-        micBtn.classList.toggle('highlight')
-        fft.setInput(checkInput());
-    })
+    // BROKEN MIC BUTTON
+    // let micBtn = document.getElementById("mic");
+    // micBtn.addEventListener("click", (e) => {
+    //     micToggle = !micToggle;
+    //     micBtn.classList.toggle('highlight')
+    //     if (micToggle) {
+    //         song.pause();
+    //         mic.start();
+    //         fft.setInput(mic);
+    //     } else {
+    //         mic.stop();
+    //         song.play();
+    //         fft.setInput(song);
+    //     }
+        
+    // })
 
     let daft = document.getElementById("daftPunk");
     let death = document.getElementById("getGot");
@@ -165,12 +163,6 @@ function draw(){
         g = greenSlider.value();
         b = blueSlider.value();
     }
-    
-
-    // let cent = Math.floor(fft.getCentroid());
-    // let centroid = Math.floor(map(cent, 0, 10000, 5, 1))
-    // fill(255)
-    // text(`${centroid}`, width/2, 20)
 
     // RECTANGLE OUTLINE
     if (outlineCheck.checked()) {
