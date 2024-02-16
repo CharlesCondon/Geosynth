@@ -2,11 +2,14 @@ let mic;
 let micToggle = false;
 let angle = 0;
 let test = 0;
+let speedSlider,weightSlider,volSlider;
 
 document.addEventListener("DOMContentLoaded", (event) => {
-    let btns = document.getElementsByClassName("navBtnCont")
+    let btns = document.getElementsByClassName("navToggle")
     let hideBtn = document.getElementById("hide");
     let showBtn = document.getElementById("show");
+    let setBtn = document.getElementById("settings");
+
     hideBtn.addEventListener("click", (e) => {
         btns.forEach( e => {
             e.classList.toggle('hidden')
@@ -16,6 +19,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         btns.forEach( e => {
             e.classList.toggle('hidden')
         })
+    })
+    setBtn.addEventListener("click", (e) => {
+        
     })
 
     
@@ -61,10 +67,18 @@ function setup(){
         micBtn.classList.toggle('highlight')
         fft.setInput(checkInput());
     })
+
+    speedSlider = createSlider(50, 700, 200, 50);
+    speedSlider.parent("settingsCont");
+    weightSlider = createSlider(1, 10, 1, 1);
+    weightSlider.parent("settingsCont");
+    volSlider = createSlider(0, 1, .5, .1);
+    volSlider.parent("settingsCont");
 }
 
 function draw(){
     background(0, 0, 0, 255);
+    song.setVolume(volSlider.value());
     //text('tap to start', width/2, 20);
 
     let spectrum = fft.analyze();
@@ -193,23 +207,18 @@ function draw(){
     push();
     translate(width / 2, height / 2);
     angle += radians(1);
-    //rotate(-angle/centroid);
     for (let i = 0; i< spectrum.length-350; i++){
         let y = map(i, 0, spectrum.length-350, height/2, height);
         let y2 = map(i, spectrum.length-350, 0, 0, height/2);
         let x = map(i, 0, spectrum.length-350, width/2, width);
         let x2 = map(i, spectrum.length-350, 0, 0, width/2);
 
-        let h = -height + map(spectrum[i], 0, 255, height, 0);
-        //stroke(r,g,b)
-        //fill(spectrum[i], spectrum[i], spectrum[i])
         fill(r, g, b, spectrum[i])
-        rect(0, y, width, 1 )
-        rect(0, y2, width, 1 )
-        rect(x, 0, 1, height )
-        rect(x2, 0, 1, height )
-        //angle += radians(1);
-        rotate(angle/200);
+        rect(0, y, width, weightSlider.value() )
+        rect(0, y2, width, weightSlider.value() )
+        rect(x, 0, weightSlider.value(), height )
+        rect(x2, 0, weightSlider.value(), height )
+        rotate(angle/speedSlider.value());
     }
     pop();
     endShape();
