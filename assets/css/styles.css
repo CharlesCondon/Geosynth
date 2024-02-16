@@ -46,8 +46,7 @@ nav {
 }
 
 button {
-    background-color: transparent;
-    border: none;
+
 }
 
 #show {
@@ -89,6 +88,18 @@ button {
     flex-direction: row;
     gap: 10px;
     color: white;
+}
+
+#songsCont {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, .25);
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    max-height: 180px;
+    overflow-y: scroll;
 }
 
 @media only screen and (min-height: 890px) {

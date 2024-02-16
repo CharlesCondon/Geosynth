@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let setCont = document.getElementById("settingsCont");
     let layerBtn = document.getElementById("layers");
     let layerCont = document.getElementById("layersCont");
+    let songBtn = document.getElementById("music");
+    let songCont = document.getElementById("songsCont");
 
     hideBtn.addEventListener("click", (e) => {
         btns.forEach( e => {
@@ -39,6 +41,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     layerBtn.addEventListener("click", (e) => {
         layerBtn.classList.toggle("highlight");
         layerCont.classList.toggle("hidden");
+    })
+    songBtn.addEventListener("click", (e) => {
+        setBtn.classList.remove("highlight");
+        setCont.classList.add("hidden");
+        layerBtn.classList.remove("highlight");
+        layerCont.classList.add("hidden");
+        songCont.classList.toggle("hidden")
     })
 
     
@@ -94,7 +103,7 @@ function setup(){
     weightSlider = createSlider(1, 10, 1, 1);
     weightSlider.parent("weightCont");
 
-    colorCheck = createCheckbox();
+    colorCheck = createCheckbox("");
     colorCheck.parent("settingsCont");
     redSlider = createSlider(0, 255, 100, .1);
     redSlider.parent("settingsCont");
