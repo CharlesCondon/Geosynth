@@ -1,5 +1,6 @@
 let mic;
 let micToggle = false;
+let song,song2,song3;
 let angle = 0;
 let test = 0;
 let userColor = false;
@@ -57,6 +58,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 function preload() {
     song = loadSound("./assets/music/mitski.mp3");
+    // song2 = loadSound("./assets/music/getGot.mp3");
+    // song3 = loadSound("./assets/music/daftPunk.mp3");
 }
 
 function togglePlay() {
@@ -72,8 +75,8 @@ function changeSong() {
         song.pause();
         //document.getElementById("playImg").src = "assets/images/playBtn.png";
     }
+    //console.log(this.id)
     song = loadSound(`./assets/music/${this.id}.mp3`);
-    console.log(song)
 }
 
 function setup(){
