@@ -61,8 +61,16 @@ function togglePlay() {
     if (song.isPlaying()) {
         song.pause();
     } else {
-        song.loop();
+        song.play();
     }
+}
+
+function changeSong() {
+    if (song.isPlaying()) {
+        song.pause();
+        //document.getElementById("playImg").src = "assets/images/playBtn.png";
+    }
+    song = loadSound(`./assets/music/${this.id}.mp3`);
 }
 
 function checkInput() {
@@ -85,7 +93,7 @@ function setup(){
     mic = new p5.AudioIn();
     mic.start();
     fft = new p5.FFT(.8, 1024);
-    fft.setInput(checkInput());
+    fft.setInput();
 
     let micBtn = document.getElementById("mic");
     micBtn.addEventListener("click", (e) => {
@@ -93,6 +101,13 @@ function setup(){
         micBtn.classList.toggle('highlight')
         fft.setInput(checkInput());
     })
+
+    let daft = document.getElementById("daftPunk");
+    let death = document.getElementById("getGot");
+    let mitski = document.getElementById("mitski");
+    daft.addEventListener('click', changeSong);
+    death.addEventListener('click', changeSong);
+    mitski.addEventListener('click', changeSong);
     
     bgSlider = createSlider(1, 255, 255, 1);
     bgSlider.parent("bgCont");
