@@ -2,7 +2,10 @@ let mic;
 let micToggle = false;
 let angle = 0;
 let test = 0;
-let speedSlider,weightSlider,volSlider;
+let userColor = false;
+let colorCheck;
+let r,g,b;
+let speedSlider,weightSlider,volSlider,redSlider,greenSlider,blueSlider;
 
 document.addEventListener("DOMContentLoaded", (event) => {
     let btns = document.getElementsByClassName("navToggle")
@@ -74,6 +77,16 @@ function setup(){
     weightSlider.parent("settingsCont");
     volSlider = createSlider(0, 1, .5, .1);
     volSlider.parent("settingsCont");
+
+    colorCheck = createCheckbox();
+    colorCheck.parent("settingsCont");
+    redSlider = createSlider(0, 255, 100, .1);
+    redSlider.parent("settingsCont");
+    greenSlider = createSlider(0, 255, 100, 1);
+    greenSlider.parent("settingsCont");
+    blueSlider = createSlider(0, 255, 100, 1);
+    blueSlider.parent("settingsCont");
+
 }
 
 function draw(){
@@ -82,9 +95,16 @@ function draw(){
     //text('tap to start', width/2, 20);
 
     let spectrum = fft.analyze();
-    let b = Math.floor(fft.getEnergy("lowMid"));
-    let g = Math.floor(fft.getEnergy("mid"));
-    let r = Math.floor(fft.getEnergy("highMid"));
+    if (!colorCheck.checked()) {
+        b = Math.floor(fft.getEnergy("lowMid"));
+        g = Math.floor(fft.getEnergy("mid"));
+        r = Math.floor(fft.getEnergy("highMid"));
+    } else {
+        r = redSlider.value();
+        g = greenSlider.value();
+        b = blueSlider.value();
+    }
+    
 
     let cent = Math.floor(fft.getCentroid());
     let centroid = Math.floor(map(cent, 0, 10000, 5, 1))
