@@ -111,7 +111,7 @@ function setup(){
     death.addEventListener('click', changeSong);
     mitski.addEventListener('click', changeSong);
     
-    bgSlider = createSlider(1, 255, 255, 1);
+    bgSlider = createSlider(1, 255, 1, 1);
     bgSlider.parent("bgCont");
     volSlider = createSlider(0, 1, .5, .1);
     volSlider.parent("volCont");
@@ -151,7 +151,7 @@ function setup(){
 }
 
 function draw(){
-    background(0, 0, 0, bgSlider.value());
+    background(0, 0, 0, -(bgSlider.value()-254));
     song.setVolume(volSlider.value());
     //text('tap to start', width/2, 20);
 
@@ -274,24 +274,85 @@ function draw(){
 
 
     // HORIZONTAL FREQUENCY LINES
+    // if (horizCheck.checked()) {
+    //     noStroke();
+    //     push();
+    //     translate(width / 2, height / 2);
+    //     // angle += radians(.25);
+    //     // rotate(-angle);
+    //     test += 1;
+    //     for (let i = 0; i< spectrum.length-350; i++){
+    //         let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
+    //         let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
+    
+    //         fill(r, g, b, (spectrum[i]*visSlider.value()))
+    //         rect(-width, y, width*2, weightSlider.value() )
+    //         rect(-width, y2, width*2, weightSlider.value() )
+    //     }
+    //     pop();
+    // }
+
+
+    // HORIZONTAL TRIANGLE FREQUENCY LINES
+    // if (horizCheck.checked()) {
+    //     noFill();
+    //     push();
+    //     translate(width / 2, height / 2);
+    //     //angle += radians(1);
+    //     for (let i = 0; i< spectrum.length/2-350; i++){
+    //         let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
+    //         let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
+    
+    //         stroke(r, g, b, ((spectrum[i]*visSlider.value())*.5))
+    //         triangle(-width/2, 0, 0, y*2, width/2, 0)
+    //         triangle(-width/2, 0, 0, y2*2, width/2, 0)
+    //         //rotate(-angle/speedSlider.value());
+    //     }
+    //     pop();
+    // }
+
+    // SPIRAL HORIZONTAL TRIANGLE FREQUENCY LINES
     if (horizCheck.checked()) {
-        noStroke();
+        noFill();
         push();
         translate(width / 2, height / 2);
-        // angle += radians(.25);
-        // rotate(-angle);
-        test += 1;
-        for (let i = 0; i< spectrum.length-350; i++){
-            let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
-            let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
+        angle += radians(1);
+        for (let i = 0; i< spectrum.length/2-450; i++){
+            let y = map(i, 0, spectrum.length-450, 0, -height*1.5);
+            let y2 = map(i, spectrum.length-450, 0, height*1.5, 0);
     
-            fill(r, g, b, (spectrum[i]*visSlider.value()))
-            rect(-width, y, width*2, weightSlider.value() )
-            rect(-width, y2, width*2, weightSlider.value() )
-            
+            stroke(r, g, b, ((spectrum[i]*visSlider.value())*.5))
+            triangle(-width, 0, 0, y*2, width, 0)
+            triangle(-width, 0, 0, y2*2, width, 0)
+            rotate(-angle/speedSlider.value());
         }
         pop();
     }
+
+
+    // DIAMOND FREQUENCY LINES
+    // if (horizCheck.checked()) {
+    //     noFill();
+    //     push();
+    //     translate(width / 2, height / 2);
+    //     // angle += radians(1);
+    //     // rotate(-angle);
+    //     // test += 1;
+    //     for (let i = 0; i< spectrum.length-350; i++){
+    //         let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
+    //         let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
+    
+    //         stroke(r, g, b, (spectrum[i]*visSlider.value()))
+    //         triangle(0, -y, -width/2, -height/2, -y, 0)
+    //         triangle(0, y, width/2, height/2, y, 0)
+    //         triangle(0, -y, width/2, -height/2, y, 0)
+    //         triangle(0, y, -width/2, height/2, -y, 0)
+
+    //         //triangle(0, 0, 0, y, width/2, 0)
+    //        // triangle(-width/2, 0, 0, y2, width/2, 0)
+    //     }
+    //     pop();
+    // }
 
 
     // BLACK HOLE VISUAL
@@ -308,10 +369,10 @@ function draw(){
             let x2 = map(i, spectrum.length-350, 0, 0, width/2);
     
             fill(r, g, b, spectrum[i])
-            rect(0, y, width, weightSlider.value() )
-            rect(0, y2, width, weightSlider.value() )
-            rect(x, 0, weightSlider.value(), height )
-            rect(x2, 0, weightSlider.value(), height )
+            ellipse(0, y, width, weightSlider.value() )
+            ellipse(0, y2, width, weightSlider.value() )
+            ellipse(x, 0, weightSlider.value(), height )
+            ellipse(x2, 0, weightSlider.value(), height )
             rotate(angle/speedSlider.value());
         }
         pop();
