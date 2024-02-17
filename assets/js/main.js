@@ -113,7 +113,7 @@ function setup(){
     
     bgSlider = createSlider(1, 255, 1, 1);
     bgSlider.parent("bgCont");
-    volSlider = createSlider(0, 1, .5, .1);
+    volSlider = createSlider(0, 1, .5, .01);
     volSlider.parent("volCont");
     speedSlider = createSlider(50, 700, 200, 50);
     speedSlider.parent("speedCont");
@@ -313,6 +313,10 @@ function draw(){
 
     // SPIRAL HORIZONTAL TRIANGLE FREQUENCY LINES
     if (horizCheck.checked()) {
+        let fps = frameRate();
+        // fill(255);
+        // stroke(0);
+        // text("FPS: " + fps.toFixed(2), 10, height - 10);
         noFill();
         push();
         translate(width / 2, height / 2);
@@ -322,8 +326,8 @@ function draw(){
             let y2 = map(i, spectrum.length-450, 0, height*1.5, 0);
     
             stroke(r, g, b, ((spectrum[i]*visSlider.value())*.5))
-            triangle(-width, 0, 0, y*2, width, 0)
-            triangle(-width, 0, 0, y2*2, width, 0)
+            triangle(-width/2, 0, -width, y*2, width/2, 0)
+            triangle(-width/2, 0, width, y2*2, width/2, 0)
             rotate(-angle/speedSlider.value());
         }
         pop();
@@ -373,7 +377,7 @@ function draw(){
             ellipse(0, y2, width, weightSlider.value() )
             ellipse(x, 0, weightSlider.value(), height )
             ellipse(x2, 0, weightSlider.value(), height )
-            rotate(angle/speedSlider.value());
+            rotate(angle/-(speedSlider.value()-650));
         }
         pop();
         endShape();
