@@ -7,7 +7,7 @@ let userColor = false;
 let colorCheck;
 let r,g,b;
 let speedSlider,weightSlider,volSlider,redSlider,greenSlider,blueSlider,visSlider,bgSlider;
-let outlineCheck,crossCheck,rectCheck,horizCheck,vertCheck,circleCheck,waveCheck,rotateCheck;
+let outlineCheck,sunCheck,sun2Check,crossCheck,rectCheck,horizCheck,vertCheck,circleCheck,waveCheck,rotateCheck;
 
 document.addEventListener("DOMContentLoaded", (event) => {
     let btns = document.getElementsByClassName("navToggle")
@@ -66,7 +66,7 @@ function togglePlay() {
     if (song.isPlaying()) {
         song.pause();
     } else {
-        song.play();
+        song.loop();
     }
 }
 
@@ -104,12 +104,17 @@ function setup(){
         
     // })
 
-    let daft = document.getElementById("daftPunk");
-    let death = document.getElementById("getGot");
-    let mitski = document.getElementById("mitski");
-    daft.addEventListener('click', changeSong);
-    death.addEventListener('click', changeSong);
-    mitski.addEventListener('click', changeSong);
+    let songs = document.getElementsByClassName("songSelect");
+    songs.forEach((e) => {
+        e.addEventListener('click', changeSong);
+    })
+
+    // let daft = document.getElementById("daftPunk");
+    // let death = document.getElementById("getGot");
+    // let mitski = document.getElementById("mitski");
+    // daft.addEventListener('click', changeSong);
+    // death.addEventListener('click', changeSong);
+    // mitski.addEventListener('click', changeSong);
     
     bgSlider = createSlider(1, 255, 1, 1);
     bgSlider.parent("bgCont");
@@ -117,37 +122,40 @@ function setup(){
     volSlider.parent("volCont");
     speedSlider = createSlider(50, 700, 200, 50);
     speedSlider.parent("speedCont");
-    weightSlider = createSlider(1, 10, 1, 1);
+    weightSlider = createSlider(1, 10, 2, 1);
     weightSlider.parent("weightCont");
 
-    colorCheck = createCheckbox("");
-    colorCheck.parent("settingsCont");
+    colorCheck = createCheckbox(" Auto-Color", true);
+    colorCheck.parent("colorCont");
     redSlider = createSlider(0, 255, 100, .1);
-    redSlider.parent("settingsCont");
+    redSlider.parent("redCont");
     greenSlider = createSlider(0, 255, 100, 1);
-    greenSlider.parent("settingsCont");
+    greenSlider.parent("greenCont");
     blueSlider = createSlider(0, 255, 100, 1);
-    blueSlider.parent("settingsCont");
+    blueSlider.parent("blueCont");
 
+    visSlider = createSlider(.1, 1, 1, .1);
+    visSlider.parent("visCont");
     circleCheck = createCheckbox(" Spiral",true);
     circleCheck.parent("layersCont");
+    sunCheck = createCheckbox(" Sun");
+    sunCheck.parent("layersCont");
+    sun2Check = createCheckbox(" Sun 2");
+    sun2Check.parent("layersCont");
     outlineCheck = createCheckbox(" Outline");
     outlineCheck.parent("layersCont");
     crossCheck = createCheckbox(" Crosshash");
     crossCheck.parent("layersCont");
     rectCheck = createCheckbox(" Rectangle");
     rectCheck.parent("layersCont");
-    rotateCheck = createCheckbox(" Spin Rectangles");
-    rotateCheck.parent("layersCont");
+    // rotateCheck = createCheckbox(" Spin Rectangles");
+    // rotateCheck.parent("layersCont");
     horizCheck = createCheckbox(" Horizontal");
     horizCheck.parent("layersCont");
     vertCheck = createCheckbox(" Vertical");
     vertCheck.parent("layersCont");
     waveCheck = createCheckbox(" Wavelength");
     waveCheck.parent("layersCont");
-
-    visSlider = createSlider(.1, 1, 1, .1);
-    visSlider.parent("layersCont");
 }
 
 function draw(){
@@ -158,7 +166,7 @@ function draw(){
     let spectrum = fft.analyze();
     let waveform = fft.waveform();
 
-    if (!colorCheck.checked()) {
+    if (colorCheck.checked()) {
         b = Math.floor(fft.getEnergy("lowMid"));
         g = Math.floor(fft.getEnergy("mid"));
         r = Math.floor(fft.getEnergy("highMid"));
@@ -228,10 +236,10 @@ function draw(){
         beginShape();
         push();
         translate(width / 2, height / 2);
-        if (rotateCheck.checked()) {
-            angle += radians(.25);
-            rotate(-angle);
-        }
+        // if (rotateCheck.checked()) {
+        //     angle += radians(.25);
+        //     rotate(-angle);
+        // }
         for (let i = 0; i< spectrum.length-350; i++){
             let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
             let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
@@ -274,86 +282,84 @@ function draw(){
 
 
     // HORIZONTAL FREQUENCY LINES
-    // if (horizCheck.checked()) {
-    //     noStroke();
-    //     push();
-    //     translate(width / 2, height / 2);
-    //     // angle += radians(.25);
-    //     // rotate(-angle);
-    //     test += 1;
-    //     for (let i = 0; i< spectrum.length-350; i++){
-    //         let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
-    //         let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
-    
-    //         fill(r, g, b, (spectrum[i]*visSlider.value()))
-    //         rect(-width, y, width*2, weightSlider.value() )
-    //         rect(-width, y2, width*2, weightSlider.value() )
-    //     }
-    //     pop();
-    // }
-
-
-    // HORIZONTAL TRIANGLE FREQUENCY LINES
-    // if (horizCheck.checked()) {
-    //     noFill();
-    //     push();
-    //     translate(width / 2, height / 2);
-    //     //angle += radians(1);
-    //     for (let i = 0; i< spectrum.length/2-350; i++){
-    //         let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
-    //         let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
-    
-    //         stroke(r, g, b, ((spectrum[i]*visSlider.value())*.5))
-    //         triangle(-width/2, 0, 0, y*2, width/2, 0)
-    //         triangle(-width/2, 0, 0, y2*2, width/2, 0)
-    //         //rotate(-angle/speedSlider.value());
-    //     }
-    //     pop();
-    // }
-
-    // SPIRAL HORIZONTAL TRIANGLE FREQUENCY LINES
     if (horizCheck.checked()) {
-        let fps = frameRate();
-        // fill(255);
-        // stroke(0);
-        // text("FPS: " + fps.toFixed(2), 10, height - 10);
-        noFill();
+        noStroke();
         push();
         translate(width / 2, height / 2);
-        angle += radians(1);
-        for (let i = 0; i< spectrum.length/2-450; i++){
-            let y = map(i, 0, spectrum.length-450, 0, -height*1.5);
-            let y2 = map(i, spectrum.length-450, 0, height*1.5, 0);
+        // angle += radians(1);
+        // rotate(-angle);
+        for (let i = 0; i< spectrum.length-350; i++){
+            let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
+            let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
     
-            stroke(r, g, b, ((spectrum[i]*visSlider.value())*.5))
-            triangle(-width/2, 0, -width, y*2, width/2, 0)
-            triangle(-width/2, 0, width, y2*2, width/2, 0)
-            rotate(-angle/speedSlider.value());
+            fill(r, g, b, (spectrum[i]*visSlider.value()))
+            rect(-width, y, width*2, weightSlider.value() )
+            rect(-width, y2, width*2, weightSlider.value() )
         }
         pop();
     }
 
 
-    // DIAMOND FREQUENCY LINES
+    // SUN VISUAL
+    if (sunCheck.checked()) {
+        noFill();
+        push();
+        translate(width / 2, height / 2);
+        angle += radians(1);
+        strokeWeight(weightSlider.value())
+        for (let i = 0; i< spectrum.length/2-350; i++){
+            let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
+            let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
+    
+            stroke(r, g, b, (spectrum[i]*visSlider.value()))
+            triangle(-width, 0, 0, y*2, width, 0)
+            triangle(-width, 0, 0, y2*2, width, 0)
+            rotate(-angle/(speedSlider.value()-750));
+        }
+        pop();
+    }
+
+    // SUN 2 VISUAL (previously corner triangles)
+    if (sun2Check.checked()) {
+        noFill();
+        push();
+        translate(width / 2, height / 2);
+        angle += radians(1);
+        
+        strokeWeight(weightSlider.value())
+        for (let i = 0; i< spectrum.length-350; i++){
+            let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
+            let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
+    
+            stroke(r, g, b, (spectrum[i]*(visSlider.value()*2)))
+            triangle(0, -y, -width/2, -height/2, -y, 0)
+            triangle(0, y, width/2, height/2, y, 0)
+            triangle(0, -y, width/2, -height/2, y, 0)
+            triangle(0, y, -width/2, height/2, -y, 0)
+            rotate(angle/(speedSlider.value()-750));
+        }
+        pop();
+    }
+
+    // SPIRAL HORIZONTAL TRIANGLE FREQUENCY LINES
     // if (horizCheck.checked()) {
+    //     let fps = frameRate();
+    //     // fill(255);
+    //     // stroke(0);
+    //     // text("FPS: " + fps.toFixed(2), 10, height - 10);
     //     noFill();
     //     push();
     //     translate(width / 2, height / 2);
-    //     // angle += radians(1);
-    //     // rotate(-angle);
-    //     // test += 1;
-    //     for (let i = 0; i< spectrum.length-350; i++){
-    //         let y = map(i, 0, spectrum.length-350, 0, -height*1.5);
-    //         let y2 = map(i, spectrum.length-350, 0, height*1.5, 0);
+    //     angle += radians(1);
+    //     strokeWeight(weightSlider.value())
+    //     for (let i = 0; i< spectrum.length/2-450; i++){
+    //         let y = map(i, 0, spectrum.length-450, 0, -height*1.5);
+    //         let y2 = map(i, spectrum.length-450, 0, height*1.5, 0);
     
     //         stroke(r, g, b, (spectrum[i]*visSlider.value()))
-    //         triangle(0, -y, -width/2, -height/2, -y, 0)
-    //         triangle(0, y, width/2, height/2, y, 0)
-    //         triangle(0, -y, width/2, -height/2, y, 0)
-    //         triangle(0, y, -width/2, height/2, -y, 0)
-
-    //         //triangle(0, 0, 0, y, width/2, 0)
-    //        // triangle(-width/2, 0, 0, y2, width/2, 0)
+    //         triangle(-width/2, -width, -width, y*2, width/2, 0)
+    //         triangle(-width/2, -width, width, y2*2, width/2, 0)
+    //         //rotate(-angle/(speedSlider.value()-750));
     //     }
     //     pop();
     // }
@@ -372,12 +378,12 @@ function draw(){
             let x = map(i, 0, spectrum.length-350, width/2, width);
             let x2 = map(i, spectrum.length-350, 0, 0, width/2);
     
-            fill(r, g, b, spectrum[i])
-            ellipse(0, y, width, weightSlider.value() )
-            ellipse(0, y2, width, weightSlider.value() )
-            ellipse(x, 0, weightSlider.value(), height )
-            ellipse(x2, 0, weightSlider.value(), height )
-            rotate(angle/-(speedSlider.value()-650));
+            fill(r, g, b, (spectrum[i]*visSlider.value()))
+            rect(0, y, width, weightSlider.value() )
+            rect(0, y2, width, weightSlider.value() )
+            rect(x, 0, weightSlider.value(), height )
+            rect(x2, 0, weightSlider.value(), height )
+            rotate(angle/-(speedSlider.value()-750));
         }
         pop();
         endShape();
