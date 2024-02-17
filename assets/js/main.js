@@ -77,6 +77,8 @@ function changeSong() {
     }
     //console.log(this.id)
     song = loadSound(`./assets/music/${this.id}.mp3`);
+    console.log("song changed:")
+    console.log(song)
 }
 
 function setup(){
