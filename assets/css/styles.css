@@ -6,6 +6,7 @@ html, body {
     overflow: hidden;
     height: 100vh;
     width: 100vw;
+    font-family: "Kdam Thmor Pro", sans-serif;
 }
 
 .hidden {
@@ -46,7 +47,7 @@ nav {
 }
 
 button {
-
+    font-family: "Kdam Thmor Pro", sans-serif;
 }
 
 #show {
@@ -102,8 +103,70 @@ button {
     overflow-y: scroll;
 }
 
+input[type="range"] {
+    -webkit-appearance: none;
+     appearance: none;
+     background: transparent;
+     cursor: pointer;
+     width: 12rem;
+ }
+input[type="range"]:focus {
+    outline: none;
+  }
+input[type="range"]::-webkit-slider-runnable-track {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    height: 0.5rem;  
+}
+ input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    margin-top: -12px; /* Centers thumb on the track */
+
+    /*custom styles*/
+    background-color: #a3a3a3;
+    height: 1.75rem;
+    width: 1rem;
+    border-radius: 2px;
+}
+input[type="range"]:focus::-webkit-slider-thumb {   
+   
+    outline: 3px solid #d1d1d1;
+}
+input[type="range"]::-moz-range-track {
+    background-color: #053a5f;
+    border-radius: 0.5rem;
+    height: 0.5rem;
+ }
+/* FIREFOX SPECIFIC"
+/* slider thumb */
+input[type="range"]::-moz-range-thumb {
+    border: none; /*Removes extra border that FF applies*/
+    border-radius: 0; /*Removes default border-radius that FF applies*/
+ 
+    /*custom styles*/
+    background-color: #5cd5eb;
+    height: 2rem;
+    width: 1rem;
+}
+ 
+input[type="range"]:focus::-moz-range-thumb {
+   border: 1px solid #053a5f;
+   outline: 3px solid #053a5f;
+   outline-offset: 0.125rem; 
+}
+
+button {
+    width: 190px;
+    padding: 3px 5px;
+}
+
 @media only screen and (min-height: 890px) {
     #modalCont {
         flex-direction: column;
     }
+}
+
+@media (max-width: 600px) {
+
 }
