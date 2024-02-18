@@ -7,7 +7,7 @@ let userColor = false;
 let colorCheck;
 let r,g,b;
 let speedSlider,weightSlider,volSlider,redSlider,greenSlider,blueSlider,visSlider,bgSlider;
-let outlineCheck,sunCheck,sun2Check,crossCheck,rectCheck,horizCheck,vertCheck,circleCheck,waveCheck,rotateCheck;
+let outlineCheck,shellCheck,sunCheck,sun2Check,crossCheck,rectCheck,horizCheck,vertCheck,circleCheck,waveCheck,rotateCheck;
 
 document.addEventListener("DOMContentLoaded", (event) => {
     let btns = document.getElementsByClassName("navToggle")
@@ -138,8 +138,10 @@ function setup(){
 
     visSlider = createSlider(.1, 1, 1, .1);
     visSlider.parent("visCont");
-    circleCheck = createCheckbox(" Spiral",true);
+    circleCheck = createCheckbox(" Inward Spiral",true);
     circleCheck.parent("layersCont");
+    shellCheck = createCheckbox(" Shell Spiral");
+    shellCheck.parent("layersCont");
     sunCheck = createCheckbox(" Sun");
     sunCheck.parent("layersCont");
     sun2Check = createCheckbox(" Sun 2");
@@ -199,6 +201,27 @@ function draw(){
             rect(0, y2, width*2, weightSlider.value() )
             rect(x, 0, weightSlider.value(), height*4 )
             rect(x2, 0, weightSlider.value(), height*4 )
+            
+        }
+        pop();
+        endShape();
+    }
+
+
+    // SHELL SPIRAL
+    if (shellCheck.checked()) {
+        noFill();
+        beginShape();
+        push();
+        translate(width / 2, height / 2);
+        angle += radians(1);
+        strokeWeight(weightSlider.value())
+        for (let i = 0; i< 256; i++){
+            let y = map(i, 0, 256, 0, height);
+ 
+            stroke(r, g, b, (spectrum[i]*visSlider.value()))
+            ellipse(0, 0, y, i)
+            rotate(angle/(speedSlider.value()-750));
         }
         pop();
         endShape();
