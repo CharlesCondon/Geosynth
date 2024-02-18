@@ -48,6 +48,7 @@ nav {
 
 button {
     font-family: "Kdam Thmor Pro", sans-serif;
+    padding: 5px 10px;
 }
 
 #show {
@@ -109,7 +110,7 @@ input[type="range"] {
      background: transparent;
      cursor: pointer;
      width: 12rem;
- }
+}
 input[type="range"]:focus {
     outline: none;
   }
@@ -149,16 +150,10 @@ input[type="range"]::-moz-range-thumb {
     height: 2rem;
     width: 1rem;
 }
- 
 input[type="range"]:focus::-moz-range-thumb {
    border: 1px solid #053a5f;
    outline: 3px solid #053a5f;
    outline-offset: 0.125rem; 
-}
-
-button {
-    width: 190px;
-    padding: 3px 5px;
 }
 
 @media only screen and (min-height: 890px) {
@@ -168,5 +163,7 @@ button {
 }
 
 @media (max-width: 600px) {
-
+    input[type="range"] {
+        width: 9rem;
+    }
 }
