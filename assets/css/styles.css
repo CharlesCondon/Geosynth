@@ -47,8 +47,11 @@ nav {
 }
 
 button {
+    -webkit-appearance: none;
     font-family: "Kdam Thmor Pro", sans-serif;
     padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
 }
 
 #show {
@@ -98,10 +101,14 @@ button {
     gap: 10px;
     background-color: rgba(255, 255, 255, .25);
     border-radius: 5px;
-    padding: 10px;
+    padding: 12px;
     color: white;
     max-height: 180px;
     overflow-y: scroll;
+}
+
+.songSelect h2 {
+    font-size: 16px;
 }
 
 input[type="range"] {
