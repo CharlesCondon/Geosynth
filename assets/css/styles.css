@@ -53,6 +53,9 @@ button {
     border: none;
     border-radius: 5px;
 }
+button:hover {
+    background-color: rgb(172, 172, 172);
+}
 
 #show {
     position: fixed;
@@ -163,14 +166,33 @@ input[type="range"]:focus::-moz-range-thumb {
    outline-offset: 0.125rem; 
 }
 
+#startModal {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    color: white;
+    max-width: 350px;
+    text-align: right;
+    padding: 10px;
+    margin: 10px;
+    right: 0;
+    gap: 20px;
+}
+#startModal p {
+    font-size: 12px;
+}
+
 @media only screen and (min-height: 890px) {
     #modalCont {
         flex-direction: column;
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
     input[type="range"] {
         width: 9rem;
+    }
+    #startModal {
+        width: 250px;
     }
 }

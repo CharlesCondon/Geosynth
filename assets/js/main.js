@@ -19,6 +19,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let layerCont = document.getElementById("layersCont");
     let songBtn = document.getElementById("music");
     let songCont = document.getElementById("songsCont");
+    let startBtn = document.getElementById("getStarted");
+    let startCont = document.getElementById("startModal");
+
+    startBtn.addEventListener("click", (e) => {
+        startCont.classList.add("hidden");
+    })
 
     hideBtn.addEventListener("click", (e) => {
         btns.forEach( e => {
@@ -152,7 +158,7 @@ function setup(){
     waveCheck.parent("layersCont");
 }
 
-function draw(){
+function draw() {
     background(0, 0, 0, -(bgSlider.value()-254));
     song.setVolume(volSlider.value());
     //text('tap to start', width/2, 20);
